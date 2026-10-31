@@ -354,5 +354,169 @@ main { flex: 1; padding: 42px 5%; min-width: 0; }
 </section>
   </main>
 </div>
+  
+<script>
+const CLE_EMPLOYES = "tenuta_rosso_employes";
+
+function chargerEmployes() {
+  try {
+    return JSON.parse(localStorage.getItem(CLE_EMPLOYES)) || [];
+  } catch {
+    return [];
+  }
+}
+
+let employes = chargerEmployes();
+
+function sauvegarderEmployes() {
+  localStorage.setItem(CLE_EMPLOYES, JSON.stringify(employes));
+}
+
+function echapperHTML(texte) {
+  return String(texte).replace(/[&<>"']/g, caractere => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[caractere]);
+}
+
+function ouvrirFormulaireEmploye(id = "") {
+  document.getElementById("formulaireEmploye").style.display = "block";
+  document.getElementById("titreFormulaire").textContent =
+    id ? "Modifier un employé" : "Nouvel employé";
+
+  const employe = employes.find(e => e.id === id);
+
+  document.getElementById("employeId").value = employe ? employe.id : "";
+  document.getElementById("nomEmploye").value = employe ? employe.nom : "";
+  document.getElementById("posteEmploye").value = employe ? employe.poste : "";
+  document.getElementById("dateEmploye").value = employe ? employe.date : "";
+  document.getElementById("typeRemuneration").value =
+    employe ? employe.type : "heure";
+  document.getElementById("montantEmploye").value =
+    employe ? employe.montant : "";
+  document.getElementById("statutEmploye").value =
+    employe ? employe.statut : "Actif";
+
+  document.getElementById("formulaireEmploye").scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}
+
+function fermerFormulaireEmploye() {
+  document.getElementById("formulaireEmploye").style.display = "none";
+}
+
+function enregistrerEmploye() {
+  const id = document.getElementById("employeId").value;
+  const nom = document.getElementById("nomEmploye").value.trim();
+  const poste = document.getElementById("posteEmploye").value.trim();
+  const date = document.getElementById("dateEmploye").value;
+  const type = document.getElementById("typeRemuneration").value;
+  const montant = Number(document.getElementById("montantEmploye").value);
+  const statut = document.getElementById("statutEmploye").value;
+
+  if (!nom || !poste || !date || !document.getElementById("montantEmploye").value) {
+    alert("Merci de compléter tous les champs.");
+    return;
+  }
+
+  if (!Number.isFinite(montant) || montant < 0) {
+    alert("Le montant doit être un nombre positif.");
+    return;
+  }
+
+  const fiche = {
+    id: id || (Date.now().toString() + Math.random().toString(16).slice(2)),
+    nom, poste, date, type, montant, statut
+  };
+
+  if (id) {
+    employes = employes.map(e => e.id === id ? fiche : e);
+  } else {
+    employes.push(fiche);
+  }
+
+  sauvegarderEmployes();
+  afficherEmployes();
+  fermerFormulaireEmploye();
+  alert("La fiche employé a bien été enregistrée !");
+}
+
+function modifierEmploye(id) {
+  ouvrirFormulaireEmploye(id);
+}
+
+function supprimerEmploye(id) {
+  const employe = employes.find(e => e.id === id);
+  if (!employe) return;
+
+  if (!confirm("Supprimer la fiche de " + employe.nom + " ?")) return;
+
+  employes = employes.filter(e => e.id !== id);
+  sauvegarderEmployes();
+  afficherEmployes();
+}
+
+function afficherEmployes() {
+  const liste = document.getElementById("listeEmployes");
+  const actifs = employes.filter(e => e.statut === "Actif").length;
+
+  document.getElementById("nombreEmployes").textContent = actifs;
+  document.getElementById("effectifTotal").textContent = employes.length;
+
+  const totalReference = employes
+    .filter(e => e.statut === "Actif")
+    .reduce((total, e) => total + e.montant, 0);
+
+  document.getElementById("masseSalariale").textContent =
+    totalReference.toLocaleString("fr-FR") + " €";
+
+  if (employes.length === 0) {
+    liste.innerHTML = `
+      <tr>
+        <td colspan="5" style="padding:25px;text-align:center;color:var(--muted);">
+          Aucun employé enregistré.
+        </td>
+      </tr>`;
+    return;
+  }
+
+  liste.innerHTML = employes.map(e => {
+    const types = {
+      heure: "À l'heure",
+      mission: "À la mission",
+      fixe: "Salaire fixe"
+    };
+
+    return `
+      <tr style="border-bottom:1px solid var(--line);color:var(--text);">
+        <td style="padding:16px;">${echapperHTML(e.nom)}</td>
+        <td style="padding:16px;">${echapperHTML(e.poste)}</td>
+        <td style="padding:16px;">
+          ${Number(e.montant).toLocaleString("fr-FR")} € / ${types[e.type]}
+        </td>
+        <td style="padding:16px;">
+          ${e.statut === "Actif" ? "● Actif" : "○ Inactif"}
+        </td>
+        <td style="padding:16px;white-space:nowrap;">
+          <button onclick="modifierEmploye('${e.id}')"
+            style="background:transparent;color:var(--gold);border:1px solid var(--line);padding:7px;cursor:pointer;">
+            Modifier
+          </button>
+          <button onclick="supprimerEmploye('${e.id}')"
+            style="background:transparent;color:#d58b8b;border:1px solid var(--line);padding:7px;cursor:pointer;">
+            Supprimer
+          </button>
+        </td>
+      </tr>`;
+  }).join("");
+}
+
+afficherEmployes();
+</script>
 </body>
 </html>
