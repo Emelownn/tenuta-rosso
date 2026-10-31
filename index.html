@@ -1,95 +1,264 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tenuta Rosso | Domaine Viticole</title>
-
+<title>Tenuta Rosso | Gestion du domaine</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+  --bg: #10100f;
+  --panel: #191816;
+  --gold: #c5a46d;
+  --gold-light: #e2c995;
+  --red: #651e25;
+  --text: #eee9df;
+  --muted: #928b80;
+  --line: rgba(197,164,109,.18);
 }
-
+* { box-sizing: border-box; }
 body {
-    background: #101010;
-    color: #eee7d8;
-    font-family: Georgia, serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
 }
-
-header {
-    padding: 25px 7%;
-    border-bottom: 1px solid #a98b50;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 255px;
+  background: #151412;
+  border-right: 1px solid var(--line);
+  padding: 30px 18px;
+  display: flex;
+  flex-direction: column;
 }
-
-.logo {
-    color: #c5a15a;
-    font-size: 25px;
-    letter-spacing: 4px;
+.brand {
+  text-align: center;
+  padding: 10px 0 35px;
+  border-bottom: 1px solid var(--line);
 }
-
-.hero {
-    min-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 40px 20px;
-    background: linear-gradient(#0009, #000b),
-    url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1800')
-    center/cover;
+.brand-mark {
+  color: var(--gold);
+  font-size: 34px;
+  margin-bottom: 10px;
 }
-
-.hero h1 {
-    color: #d0ad69;
-    font-size: clamp(38px, 7vw, 70px);
-    letter-spacing: 7px;
+.brand h1 {
+  color: var(--gold-light);
+  font-size: 23px;
+  letter-spacing: 4px;
+  margin: 0;
+  font-weight: normal;
 }
-
-.line {
-    width: 90px;
-    height: 2px;
-    background: #8b2635;
-    margin: 25px auto;
+.brand p {
+  color: var(--muted);
+  font: 9px Arial, sans-serif;
+  letter-spacing: 3px;
+  margin-top: 9px;
 }
-
-.hero p {
-    margin-top: 15px;
-    letter-spacing: 3px;
+.menu-title {
+  color: #746d62;
+  font: 10px Arial, sans-serif;
+  letter-spacing: 2px;
+  margin: 30px 12px 13px;
 }
-
-footer {
-    text-align: center;
-    padding: 25px;
-    color: #a98b50;
-    border-top: 1px solid #493b28;
-    font-size: 13px;
+nav { display: grid; gap: 7px; }
+nav a {
+  color: #bdb5a8;
+  text-decoration: none;
+  padding: 13px 14px;
+  border: 1px solid transparent;
+  font: 13px Arial, sans-serif;
+  letter-spacing: .5px;
+  border-radius: 3px;
+}
+nav a:hover, nav a.active {
+  color: var(--gold-light);
+  background: rgba(197,164,109,.08);
+  border-color: var(--line);
+}
+nav a.active { border-left: 3px solid var(--gold); }
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding: 20px 10px 0;
+  color: var(--muted);
+  font: 11px Arial, sans-serif;
+  line-height: 1.8;
+}
+.sidebar-footer strong {
+  color: var(--gold);
+  font-weight: normal;
+}
+main { flex: 1; padding: 42px 5%; min-width: 0; }
+.topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+  gap: 15px;
+}
+.eyebrow {
+  color: var(--gold);
+  font: 10px Arial, sans-serif;
+  letter-spacing: 3px;
+}
+.status {
+  color: #bda779;
+  font: 10px Arial, sans-serif;
+  letter-spacing: 1px;
+  border: 1px solid var(--line);
+  padding: 9px 12px;
+}
+.welcome { padding: 55px 0 35px; }
+.welcome .eyebrow { margin-bottom: 17px; }
+.welcome h2 {
+  color: var(--gold-light);
+  font-size: clamp(34px, 5vw, 52px);
+  font-weight: normal;
+  margin: 0 0 15px;
+}
+.welcome p {
+  color: var(--muted);
+  font: 13px Arial, sans-serif;
+  line-height: 1.8;
+  max-width: 650px;
+}
+.section-heading {
+  color: var(--gold);
+  font-size: 19px;
+  font-weight: normal;
+  margin: 35px 0 18px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 22px;
+  min-height: 125px;
+}
+.card-label {
+  color: var(--muted);
+  font: 10px Arial, sans-serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.card-value {
+  color: var(--gold-light);
+  font-size: 25px;
+  margin-top: 17px;
+}
+.card-note {
+  color: #777064;
+  font: 11px Arial, sans-serif;
+  margin-top: 8px;
+}
+.welcome-panel {
+  margin-top: 25px;
+  padding: 27px;
+  border: 1px solid var(--line);
+  background: linear-gradient(110deg, rgba(101,30,37,.18), rgba(197,164,109,.04));
+}
+.welcome-panel h3 {
+  color: var(--gold-light);
+  font-weight: normal;
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+.welcome-panel p {
+  color: var(--muted);
+  font: 12px Arial, sans-serif;
+  line-height: 1.8;
+  margin: 0;
+}
+@media(max-width: 800px) {
+  .layout { display: block; }
+  .sidebar { width: 100%; padding: 20px; }
+  .brand { padding-bottom: 20px; }
+  nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .menu-title { margin-top: 20px; }
+  .sidebar-footer { margin-top: 25px; }
+  main { padding: 28px 20px; }
+  .cards { grid-template-columns: 1fr; }
+  .welcome { padding-top: 35px; }
 }
 </style>
 </head>
-
 <body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">✦</div>
+      <h1>TENUTA ROSSO</h1>
+      <p>GESTION DU DOMAINE</p>
+    </div>
 
-<header>
-    <div class="logo">TENUTA ROSSO</div>
-    <div>DOMAINE VITICOLE ITALIEN</div>
-</header>
+    <div class="menu-title">ESPACE DE GESTION</div>
+    <nav>
+      <a class="active" href="#accueil">⌂ &nbsp; Tableau de bord</a>
+      <a href="#comptabilite">◈ &nbsp; Comptabilité</a>
+      <a href="#ventes">♧ &nbsp; Ventes</a>
+      <a href="#stocks">▤ &nbsp; Stocks</a>
+      <a href="#personnel">♙ &nbsp; Personnel</a>
+      <a href="#partenaires">◇ &nbsp; Partenaires</a>
+      <a href="#historique">◷ &nbsp; Historique</a>
+    </nav>
 
-<section class="hero">
-    <h1>TENUTA ROSSO</h1>
-    <div class="line"></div>
-    <p>DOMAINE VITICOLE ITALIEN</p>
-    <p>Famiglia • Onore • Tradizione</p>
-</section>
+    <div class="sidebar-footer">
+      <strong>TENUTA ROSSO</strong><br>
+      Famiglia • Onore • Tradizione<br>
+      <span>Édition de gestion — 2026</span>
+    </div>
+  </aside>
 
-<footer>
-    TENUTA ROSSO — DOMAINE VITICOLE ITALIEN
-</footer>
+  <main id="accueil">
+    <div class="topline">
+      <span class="eyebrow">DOMAINE VITICOLE ITALIEN</span>
+      <span class="status">◆ ESPACE DE GESTION</span>
+    </div>
 
+    <section class="welcome">
+      <div class="eyebrow">BENVENUTI ALLA TENUTA</div>
+      <h2>Bienvenue au domaine.</h2>
+      <p>
+        L'espace de gestion de Tenuta Rosso centralise les activités du domaine,
+        le suivi des ventes, les stocks et la comptabilité.
+        Chaque détail compte. Chaque décision engage la Famiglia.
+      </p>
+    </section>
+
+    <h3 class="section-heading">Vue générale</h3>
+    <section class="cards">
+      <div class="card">
+        <div class="card-label">Trésorerie</div>
+        <div class="card-value">— €</div>
+        <div class="card-note">À renseigner</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Ventes du mois</div>
+        <div class="card-value">— €</div>
+        <div class="card-note">À renseigner</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Stock disponible</div>
+        <div class="card-value">—</div>
+        <div class="card-note">À renseigner</div>
+      </div>
+    </section>
+
+    <section class="welcome-panel">
+      <h3>La tradizione continua.</h3>
+      <p>
+        Un domaine se construit avec patience, rigueur et loyauté.
+        Cet espace accompagnera le développement de Tenuta Rosso,
+        de la production jusqu'à la vente.
+      </p>
+    </section>
+  </main>
+</div>
 </body>
 </html>
