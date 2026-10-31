@@ -259,6 +259,99 @@ main { flex: 1; padding: 42px 5%; min-width: 0; }
         de la production jusqu'à la vente.
       </p>
     </section>
+ 
+<section id="personnel" style="margin-top:60px;">
+  <div class="eyebrow">GESTION DU DOMAINE</div>
+  <h2 style="color:var(--gold-light);font-weight:normal;font-size:34px;">
+    Gestion des employés
+  </h2>
+  <p style="color:var(--muted);font:13px Arial,sans-serif;">
+    Gérez les membres de votre équipe et suivez leur activité au sein du domaine.
+  </p>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin:30px 0 20px;">
+    <h3 style="color:var(--gold);font-weight:normal;">Registre du personnel</h3>
+    <button onclick="ouvrirFormulaireEmploye()" style="background:var(--gold);color:#171512;border:0;padding:13px 19px;cursor:pointer;font-weight:bold;">
+      + Ajouter un employé
+    </button>
+  </div>
+
+  <div class="cards" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-label">Employés actifs</div>
+      <div class="card-value" id="nombreEmployes">0</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Masse salariale estimée</div>
+      <div class="card-value" id="masseSalariale">0 €</div>
+      <div class="card-note">Selon les rémunérations renseignées</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Effectif total</div>
+      <div class="card-value" id="effectifTotal">0</div>
+    </div>
+  </div>
+
+  <div id="formulaireEmploye" style="display:none;background:var(--panel);border:1px solid var(--line);padding:24px;margin-bottom:25px;">
+    <h3 id="titreFormulaire" style="color:var(--gold-light);font-weight:normal;">Nouvel employé</h3>
+    <input type="hidden" id="employeId">
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px;">
+      <label style="color:var(--muted);font:12px Arial,sans-serif;">Nom et prénom RP
+        <input id="nomEmploye" placeholder="Ex : Marco Rossi" style="display:block;width:100%;margin-top:8px;padding:12px;background:#10100f;color:white;border:1px solid var(--line);">
+      </label>
+
+      <label style="color:var(--muted);font:12px Arial,sans-serif;">Poste occupé
+        <input id="posteEmploye" placeholder="Ex : Vigneron" style="display:block;width:100%;margin-top:8px;padding:12px;background:#10100f;color:white;border:1px solid var(--line);">
+      </label>
+
+      <label style="color:var(--muted);font:12px Arial,sans-serif;">Date d'arrivée
+        <input id="dateEmploye" type="date" style="display:block;width:100%;margin-top:8px;padding:12px;background:#10100f;color:white;border:1px solid var(--line);">
+      </label>
+
+      <label style="color:var(--muted);font:12px Arial,sans-serif;">Type de rémunération
+        <select id="typeRemuneration" style="display:block;width:100%;margin-top:8px;padding:12px;background:#10100f;color:white;border:1px solid var(--line);">
+          <option value="heure">À l'heure</option>
+          <option value="mission">À la mission</option>
+          <option value="fixe">Salaire fixe</option>
+        </select>
+      </label>
+
+      <label style="color:var(--muted);font:12px Arial,sans-serif;">Montant (€)
+        <input id="montantEmploye" type="number" min="0" placeholder="Ex : 500" style="display:block;width:100%;margin-top:8px;padding:12px;background:#10100f;color:white;border:1px solid var(--line);">
+      </label>
+
+      <label style="color:var(--muted);font:12px Arial,sans-serif;">Statut
+        <select id="statutEmploye" style="display:block;width:100%;margin-top:8px;padding:12px;background:#10100f;color:white;border:1px solid var(--line);">
+          <option value="Actif">Actif</option>
+          <option value="Inactif">Inactif</option>
+        </select>
+      </label>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+      <button onclick="enregistrerEmploye()" style="background:var(--gold);color:#171512;border:0;padding:12px 20px;cursor:pointer;">Enregistrer</button>
+      <button onclick="fermerFormulaireEmploye()" style="background:transparent;color:var(--text);border:1px solid var(--line);padding:12px 20px;cursor:pointer;">Annuler</button>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;background:var(--panel);border:1px solid var(--line);">
+    <table style="width:100%;border-collapse:collapse;min-width:650px;font:12px Arial,sans-serif;">
+      <thead>
+        <tr style="color:var(--gold);text-align:left;border-bottom:1px solid var(--line);">
+          <th style="padding:16px;">EMPLOYÉ</th>
+          <th style="padding:16px;">POSTE</th>
+          <th style="padding:16px;">RÉMUNÉRATION</th>
+          <th style="padding:16px;">STATUT</th>
+          <th style="padding:16px;">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody id="listeEmployes">
+        <tr><td colspan="5" style="padding:25px;text-align:center;color:var(--muted);">Aucun employé enregistré.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
   </main>
 </div>
 </body>
