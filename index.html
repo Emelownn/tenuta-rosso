@@ -186,6 +186,14 @@ main { flex: 1; padding: 42px 5%; min-width: 0; }
   .cards { grid-template-columns: 1fr; }
   .welcome { padding-top: 35px; }
 }
+  /* Navigation entre les pages */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
 </style>
 </head>
 <body>
@@ -221,7 +229,7 @@ main { flex: 1; padding: 42px 5%; min-width: 0; }
       <span class="eyebrow">DOMAINE VITICOLE ITALIEN</span>
       <span class="status">◆ ESPACE DE GESTION</span>
     </div>
-
+<section id="dashboardPage" class="page active">
     <section class="welcome">
       <div class="eyebrow">BENVENUTI ALLA TENUTA</div>
       <h2>Bienvenue au domaine.</h2>
@@ -259,8 +267,8 @@ main { flex: 1; padding: 42px 5%; min-width: 0; }
         de la production jusqu'à la vente.
       </p>
     </section>
- 
-<section id="personnel" style="margin-top:60px;">
+ </section>
+<section id="personnel" class="page" style="margin-top:60px;">
   <div class="eyebrow">GESTION DU DOMAINE</div>
   <h2 style="color:var(--gold-light);font-weight:normal;font-size:34px;">
     Gestion des employés
@@ -517,6 +525,40 @@ function afficherEmployes() {
 }
 
 afficherEmployes();
+</script>
+  
+<script>
+// Navigation entre les pages Tenuta Rosso
+document.querySelectorAll(".sidebar nav a").forEach(lien => {
+  lien.addEventListener("click", function(e) {
+    const destination = this.getAttribute("href");
+
+    const pages = {
+      "#accueil": "dashboardPage",
+      "#personnel": "personnel"
+    };
+
+    const pageId = pages[destination];
+
+    if (!pageId) return;
+
+    e.preventDefault();
+
+    document.querySelectorAll(".page").forEach(page => {
+      page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    document.querySelectorAll(".sidebar nav a").forEach(a => {
+      a.classList.remove("active");
+    });
+
+    this.classList.add("active");
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
 </script>
 </body>
 </html>
